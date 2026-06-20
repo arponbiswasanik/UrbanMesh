@@ -1,0 +1,7 @@
+# Backend
+backend/venv/
+__pycache__/
+
+# Frontend (prepping for later)
+node_modules/
+.next/
