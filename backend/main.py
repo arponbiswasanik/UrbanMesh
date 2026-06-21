@@ -6,6 +6,7 @@ from database import engine, init_db
 from models import Issue, User
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from pydantic import BaseModel
+from fastapi import Depends
 import uuid
 
 app = FastAPI()
@@ -104,6 +105,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             "email": user.email,
             "full_name": user.full_name,
             "avatar": user.avatar,
+            "is_admin": user.is_admin,
             "created_at": user.created_at.isoformat()
         }
 
@@ -134,6 +136,7 @@ def update_current_user(request: UpdateUserRequest, token: str = Depends(oauth2_
             "email": user.email,
             "full_name": user.full_name,
             "avatar": user.avatar,
+            "is_admin": user.is_admin,
             "created_at": user.created_at.isoformat()
         }
 
@@ -162,7 +165,7 @@ def get_all_issues():
         issues = session.exec(select(Issue)).all()
     return issues
 
-# NEW ROUTE: Get issues for the logged-in user
+#Get issues for the logged-in user
 @app.get("/users/me/issues")
 def get_my_issues(token: str = Depends(oauth2_scheme)):
     user_id = decode_access_token(token)
@@ -173,3 +176,39 @@ def get_my_issues(token: str = Depends(oauth2_scheme)):
         statement = select(Issue).where(Issue.user_id == uuid.UUID(user_id))
         issues = session.exec(statement).all()
         return issues
+
+# --- Admin Schemas ---
+class IssueStatusUpdate(BaseModel):
+    status: str
+
+# --- Admin Dependency ---
+def get_current_admin(token: str = Depends(oauth2_scheme)):
+    user_id = decode_access_token(token)
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    with Session(engine) as session:
+        user = session.get(User, uuid.UUID(user_id))
+        if not user or not user.is_admin:
+            raise HTTPException(status_code=403, detail="Not authorized. Admins only.")
+    return user
+
+# --- Admin Routes ---
+@app.get("/admin/issues")
+def get_all_issues_for_admin(admin: User = Depends(get_current_admin)):
+    with Session(engine) as session:
+        issues = session.exec(select(Issue)).all()
+    return issues
+
+@app.put("/admin/issues/{issue_id}")
+def update_issue_status(issue_id: uuid.UUID, status_update: IssueStatusUpdate, admin: User = Depends(get_current_admin)):
+    with Session(engine) as session:
+        issue = session.get(Issue, issue_id)
+        if not issue:
+            raise HTTPException(status_code=404, detail="Issue not found")
+        
+        issue.status = status_update.status
+        session.add(issue)
+        session.commit()
+        session.refresh(issue)
+        return issue

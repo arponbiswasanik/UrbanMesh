@@ -19,5 +19,6 @@ class User(SQLModel, table=True):
     email: str = Field(index=True, unique=True)
     full_name: str
     hashed_password: str
-    avatar: str | None = None 
+    avatar: str | None = None
+    is_admin: bool = False 
     created_at: datetime = Field(default_factory=datetime.utcnow)

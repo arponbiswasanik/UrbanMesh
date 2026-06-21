@@ -7,12 +7,13 @@ interface User {
   email: string;
   full_name: string;
   created_at: string;
-  avatar?: string; // Added for profile pictures
+  avatar?: string; 
+  is_admin?: boolean;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  isLoading: boolean; // Added to prevent refresh redirects
+  isLoading: boolean; 
   user: User | null;
   login: (token: string) => void;
   logout: () => void;
