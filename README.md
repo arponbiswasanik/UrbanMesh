@@ -26,7 +26,7 @@
 ### Authentication & Authorization
 - Full JWT-based authentication flow (Sign In, Sign Up)
 - Protected API routes — issue submission requires a valid token
-- Protected frontend routes — Profile, Reports, and Settings require authentication
+- Protected frontend routes — Profile, Reports, Settings, and Admin require authentication
 - Global state management for session persistence across page reloads
 
 ### User Dashboards
@@ -34,11 +34,16 @@
 - **My Reports** — Dashboard displaying submitted reports with summary cards, status badges, and empty states
 - **Settings** — Update account information, manage notification preferences, and handle account deletion (Danger Zone)
 
+### Admin Dashboard
+- Role-based access control (RBAC) restricting the dashboard to admin users
+- Dedicated dashboard for city officials to review all user-submitted reports
+- Interactive split-screen map modal displaying exact issue locations using a custom Leaflet implementation
+- Inline status management (Pending, Under Review, In Progress, Resolved, Rejected) with optimistic UI updates
+
 ### Report Submission Flow
 - Click-to-pin interface on the map
 - Dynamic category selection (Road, Water, Streetlight, Traffic, etc.)
 - Form data preservation: if an unauthenticated user attempts to submit a report, form data is saved to local storage and restored seamlessly after login
-
 
 ---
 
@@ -119,7 +124,8 @@ urban-mesh/
 │   └── database.py           # Database connection engine
 ├── frontend/                 # Next.js application
 │   └── app/
-│       ├── components/       # React components (Map, Header, Forms)
+│       ├── admin/            # Admin dashboard for city officials
+│       ├── components/       # React components (Map, Header, Forms, IssueMapModal)
 │       ├── context/          # React Context for auth state
 │       ├── profile/          # User profile dashboard
 │       ├── reports/          # User reports dashboard
@@ -130,12 +136,13 @@ urban-mesh/
 └── README.md
 ```
 
+---
+
 ## Future Work
- 
+
 | Feature | Description |
 |---|---|
 | **Google OAuth Integration** | Implement the "Continue with Google" button using OAuth 2.0 to allow seamless sign-in and sign-up via Google accounts |
-| **Admin Dashboard** | A dedicated dashboard for city officials to review reports, update statuses (Pending, In Progress, Resolved), and manage submissions |
 | **Advanced Image Cropping** | Integrate a client-side cropping library (e.g., Cropper.js) to enforce exact 1:1 aspect ratios before upload for avatars and report images |
 | **Real-time Notifications** | Use server-sent events (SSE) or WebSockets to push live status updates to users when their reports are acted upon |
 | **Report Filtering & Pagination** | Add advanced search, date-range filtering, and infinite scroll to the My Reports dashboard |

@@ -1,11 +1,17 @@
 "use client";
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Reveal from '../components/Reveal';
-import IssueMapModal from '../components/IssueMapModal';
+
+// Dynamically import the map modal to prevent "window is not defined" SSR errors
+const IssueMapModal = dynamic(() => import('../components/IssueMapModal'), { 
+  ssr: false,
+  loading: () => <p className="text-white text-center p-8">Loading map...</p>
+});
 
 export default function AdminPage() {
   const { isAuthenticated, isLoading, user } = useAuth();
