@@ -80,7 +80,7 @@ export default function SignInPage() {
         </div>
 
         <div className="relative z-10 text-sm text-gray-600">
-          © 2024 UrbanMesh. All rights reserved.
+          © 2026 UrbanMesh. All rights reserved.
         </div>
       </div>
 

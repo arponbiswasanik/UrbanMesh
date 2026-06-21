@@ -123,7 +123,7 @@ export default function Home() {
             style={{ animationDelay: '1.5s' }}
           >
             <span className="bg-green-400 w-2 h-2 rounded-full animate-pulse"></span>
-            <span className="text-xs font-medium text-gray-100 tracking-wide">NOW PROCESSING REAL-TIME GEO-DATA</span>
+            <span className="text-xs font-medium text-gray-100 tracking-wide">SYNCHRONIZING LIVE DATA</span>
           </div>
 
           <h1 
@@ -169,7 +169,7 @@ export default function Home() {
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Built for the Modern Web</h2>
             </Reveal>
             <Reveal delay={200}>
-              <p className="text-gray-400 text-lg max-w-xl mx-auto">High-tech architecture meeting seamless user experience.</p>
+              <p className="text-gray-400 text-lg max-w-xl mx-auto">Modern design with a user-friendly experience.</p>
             </Reveal>
           </div>
 
@@ -218,7 +218,7 @@ export default function Home() {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
               </svg>
-              <span>© 2024 UrbanMesh. All rights reserved.</span>
+              <span>© 2026 UrbanMesh. All rights reserved.</span>
             </div>
           </Reveal>
           <Reveal delay={200}>
